@@ -1,0 +1,52 @@
+@startuml
+left to right direction
+title Диаграмма вариантов использования системы «ДомБиблиотека»
+actor "Гость" as Guest
+actor "Читатель" as Reader
+actor "Владелец" as Owner
+actor "Почтовый сервис" as Mail
+rectangle "Система «ДомБиблиотека»" {
+  usecase "Зарегистрироваться" as UC01
+  usecase "Войти в систему" as UC02
+  usecase "Пригласить читателя" as UC03
+  usecase "Добавить книгу" as UC04
+  usecase "Редактировать книгу" as UC05
+  usecase "Удалить книгу" as UC06
+  usecase "Просмотреть каталог" as UC07
+  usecase "Найти книгу" as UC08
+  usecase "Просмотреть карточку книги" as UC09
+  usecase "Оформить выдачу" as UC10
+  usecase "Оформить возврат" as UC11
+  usecase "Просмотреть книги «на руках»" as UC12
+  usecase "Просмотреть историю выдач" as UC13
+  usecase "Назначить категории и теги" as UC14
+  usecase "Отправить напоминание о возврате" as UC15
+  usecase "Запросить книгу" as UC16
+  usecase "Просмотреть мои книги" as UC17
+  usecase "Просмотреть запросы на книги" as UC18
+}
+Guest --> UC01
+Reader --> UC02
+Owner --> UC02
+Reader --> UC07
+Owner --> UC07
+Reader --> UC16
+Reader --> UC17
+Owner --> UC03
+Owner --> UC04
+Owner --> UC05
+Owner --> UC06
+Owner --> UC10
+Owner --> UC11
+Owner --> UC12
+Owner --> UC13
+Owner --> UC15
+Owner --> UC18
+Mail --> UC15
+UC08 .> UC07 : <<extend>>
+UC09 .> UC07 : <<extend>>
+UC14 .> UC04 : <<extend>>
+UC14 .> UC05 : <<extend>>
+UC10 ..> UC09 : <<include>>
+UC16 ..> UC09 : <<include>>
+@enduml
