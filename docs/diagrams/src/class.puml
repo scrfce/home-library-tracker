@@ -1,0 +1,132 @@
+@startuml
+skinparam defaultFontName "DejaVu Sans"
+skinparam dpi 180
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam roundCorner 8
+skinparam classAttributeIconSize 0
+skinparam nodesep 18
+skinparam ranksep 28
+skinparam classBackgroundColor #EEF4FB
+skinparam classBorderColor #1F3A5F
+skinparam ArrowColor #1F3A5F
+skinparam ClassFontSize 17
+skinparam ClassAttributeFontSize 16
+skinparam defaultFontSize 16
+title Диаграмма классов системы «ДомБиблиотека»
+
+abstract class User {
+  - id : int
+  - name : String
+  - email : String
+  - passwordHash : String
+  + register() : User
+  + login(email, password) : boolean
+  + logout() : void
+}
+class Owner {
+  + addBook(data) : Book
+  + editBook(id, data) : void
+  + deleteBook(id) : void
+  + issueBook(book, borrower, dueDate) : Loan
+  + returnBook(loan, date) : void
+  + inviteReader() : Invitation
+}
+class Reader {
+  + searchBooks(query) : List<Book>
+  + requestBook(book, comment) : BookRequest
+  + viewMyBooks() : List<Loan>
+}
+class Library {
+  - id : int
+  - name : String
+  - createdAt : DateTime
+  + findBooks(query) : List<Book>
+  + getActiveLoans() : List<Loan>
+}
+class Book {
+  - id : int
+  - title : String
+  - author : String
+  - genre : String
+  - isbn : String
+  - year : int
+  - location : String
+  - condition : String
+  - status : BookStatus
+  + isAvailable() : boolean
+  + changeStatus(status) : void
+}
+class Category {
+  - id : int
+  - name : String
+}
+class Tag {
+  - id : int
+  - name : String
+}
+class Borrower {
+  - name : String
+  - contact : String
+  - readerId : int [0..1]
+  + isReader() : boolean
+}
+class Loan {
+  - id : int
+  - issueDate : Date
+  - dueDate : Date
+  - returnDate : Date
+  - note : String
+  + isOverdue(today) : boolean
+  + close(returnDate) : void
+}
+class BookRequest {
+  - id : int
+  - comment : String
+  - createdAt : DateTime
+  - status : RequestStatus
+  + close() : void
+}
+class Invitation {
+  - token : String
+  - expiresAt : DateTime
+  + isValid(now) : boolean
+}
+class Reminder {
+  - id : int
+  - kind : ReminderKind
+  - sentAt : DateTime
+  + send() : boolean
+}
+enum BookStatus {
+  AVAILABLE
+  ON_LOAN
+}
+enum RequestStatus {
+  OPEN
+  CLOSED
+}
+enum ReminderKind {
+  BEFORE_DUE
+  OVERDUE
+}
+
+User <|-- Owner
+User <|-- Reader
+Owner -[hidden]right- Reader
+Owner "1" -down- "1" Library : владеет
+Library "1" *-right- "0..*" Invitation : приглашения
+Library "1" o-- "0..*" Reader : читатели
+Reader "1" -down- "0..*" BookRequest : отправляет
+Library "1" *-down- "0..*" Book : содержит
+BookRequest "0..*" -down- "1" Book : книга
+Book "0..*" -left-- "0..1" Category : категория
+Book "0..*" -down- "0..10" Tag : теги
+Book "1" -right- "0..*" Loan : выдачи
+Loan "0..*" -down- "1" Borrower : получатель
+Loan "1" *-right- "0..*" Reminder : напоминания
+Book ..down..> BookStatus
+Tag -[hidden]right- BookStatus
+BookRequest ..> RequestStatus
+Reminder ..down..> ReminderKind
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+skinparam defaultFontName "DejaVu Sans"
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontSize 18
+skinparam backgroundColor white
+skinparam roundCorner 8
+skinparam nodeBackgroundColor #EEF4FB
+skinparam nodeBorderColor #1F3A5F
+skinparam ArrowColor #1F3A5F
+title Диаграмма развёртывания системы «ДомБиблиотека»
+
+node "Устройство пользователя\n(ПК или смартфон, экран от 360 px)" as Client {
+  artifact "Веб-браузер\nChrome, Firefox, Edge, Safari" as Browser
+}
+node "Сервер приложения\nLinux, Python 3.12, 1 ГБ ОЗУ" as App {
+  component "Flask-приложение (Gunicorn)\nsrc/routes, src/services, src/models" as Flask
+  component "Планировщик напоминаний\nReminderService, 1 раз в сутки" as Sched
+  database "SQLite\nlibrary.db" as DB
+}
+node "Хранилище резервных копий\n(отдельный диск или облако)" as Backup {
+  artifact "backups/*.db\n1 копия в сутки" as Copy
+}
+cloud "Почтовый сервис\nSMTP-сервер" as Mail
+
+Browser -- Flask : HTTPS (443)\nHTML, JSON
+Flask -- DB : файловый доступ\n(SQLAlchemy)
+Sched -- DB : чтение сроков возврата
+Sched --> Mail : SMTP + TLS (587)\nписьма-напоминания
+DB ..> Copy : ежедневная\nрезервная копия
+@enduml

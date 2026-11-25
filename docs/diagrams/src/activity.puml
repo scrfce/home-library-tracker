@@ -1,0 +1,52 @@
+@startuml
+skinparam defaultFontName "DejaVu Sans"
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontSize 17
+skinparam backgroundColor white
+skinparam roundCorner 8
+skinparam ActivityBackgroundColor #EEF4FB
+skinparam ActivityBorderColor #1F3A5F
+skinparam ArrowColor #1F3A5F
+skinparam swimlaneTitleFontStyle bold
+title Диаграмма деятельности: оформление выдачи книги (UC-10, FR-10)
+
+|Владелец|
+start
+:Открыть каталог;
+:Найти книгу;
+:Открыть карточку книги;
+|Система|
+:Проверить статус книги;
+if (Статус «в наличии»?) then (нет)
+  :Показать получателя\nи срок возврата;
+  |Владелец|
+  :Принять к сведению;
+  stop
+else (да)
+endif
+|Владелец|
+:Нажать «Выдать»;
+|Система|
+:Показать форму выдачи;
+repeat
+  |Владелец|
+  :Указать получателя\nи срок возврата;
+  if (Отменить операцию?) then (да)
+    stop
+  endif
+  |Система|
+  :Проверить данные формы;
+  backward:Показать сообщение\nоб ошибке;
+repeat while (Данные некорректны?) is (да) not (нет)
+:Создать запись о выдаче;
+fork
+  :Изменить статус\nкниги на «выдана»;
+fork again
+  :Закрыть запросы\nчитателей на эту книгу;
+end fork
+:Показать сообщение\n«Книга выдана»;
+|Владелец|
+:Увидеть обновлённую\nкарточку книги;
+stop
+@enduml

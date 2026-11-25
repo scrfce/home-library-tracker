@@ -2,7 +2,7 @@
 
 Простое веб-приложение для учёта домашней библиотеки и книг, которые вы одолжили друзьям, родным или коллегам.
 
-> Статус: проектирование завершено, реализация ещё не начата (учебный проект, День 2).
+> Статус: проектирование завершено, реализация ещё не начата (учебный проект, День 3).
 
 ## Проблема
 
@@ -49,15 +49,37 @@
 
 ## Документация
 
-- [Спецификация требований (FR и NFR)](docs/requirements.md)
+- [Функциональные требования (FR)](docs/requirements/functional.md)
+- [Нефункциональные требования (NFR)](docs/requirements/non-functional.md)
 - [Варианты использования и сценарии](docs/use-case.md)
-- [Диаграмма Use Case](docs/images/use-case-diagram.png)
+- [Комплект диаграмм (UML, IDEF0, DFD)](docs/diagrams/README.md)
+- Отчёты: [День 2](docs/reports/day-2-report.docx), [День 3](docs/reports/day-3-report.docx)
+
+## Диаграммы
+
+| Диаграмма | Файл |
+| --- | --- |
+| Use Case | [use-case.png](docs/diagrams/use-case.png) |
+| Классов | [class.png](docs/diagrams/class.png) |
+| Компонентов | [component.png](docs/diagrams/component.png) |
+| Развёртывания | [deployment.png](docs/diagrams/deployment.png) |
+| Деятельности | [activity.png](docs/diagrams/activity.png) |
+| Состояний | [state-machine.png](docs/diagrams/state-machine.png) |
+| Кооперации | [communication.png](docs/diagrams/communication.png) |
+| IDEF0 A-0 | [idef0-a-0.png](docs/diagrams/idef0-a-0.png) |
+| IDEF0 A0 | [idef0-a0.png](docs/diagrams/idef0-a0.png) |
+| DFD уровня 0 | [dfd-level-0.png](docs/diagrams/dfd-level-0.png) |
+| DFD уровня 1 | [dfd-level-1.png](docs/diagrams/dfd-level-1.png) |
 
 ## Структура проекта
 
 ```
 home-library-tracker/
-├── docs/              # требования, Use Case, диаграммы
+├── docs/
+│   ├── requirements/  # функциональные и нефункциональные требования
+│   ├── diagrams/      # диаграммы (png) и исходники (src)
+│   ├── reports/       # отчёты по дням практики
+│   └── use-case.md    # варианты использования и сценарии
 ├── src/
 │   ├── models/        # модели данных
 │   ├── routes/        # маршруты и обработчики запросов
@@ -77,7 +99,8 @@ home-library-tracker/
 
 - [x] День 1: концепция, предметная область, роли, MVP
 - [x] День 2: требования, Use Case, сценарии, структура проекта
-- [ ] Проектирование базы данных и UML-диаграммы
+- [x] День 3: комплект диаграмм UML, IDEF0 и DFD
+- [ ] Проектирование базы данных
 - [ ] Реализация программных модулей
 - [ ] Тестирование и документация
 

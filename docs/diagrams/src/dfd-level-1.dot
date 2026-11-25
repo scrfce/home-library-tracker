@@ -1,0 +1,42 @@
+digraph DFD1 {
+  graph [rankdir=TB, fontname="DejaVu Sans", fontsize=26, labelloc=t, nodesep=0.4, ranksep=0.75, splines=true, pad=0.3,
+         label="DFD уровня 1. Декомпозиция процесса 4.0 «Учёт выдачи и возврата»\n "];
+  node  [fontname="DejaVu Sans", fontsize=22];
+  edge  [fontname="DejaVu Sans", fontsize=19, color="#1F3A5F", fontcolor="#222222"];
+
+  owner  [label="Владелец", shape=box, style="filled", fillcolor="#FFF2CC", penwidth=1.6];
+  reader [label="Читатель", shape=box, style="filled", fillcolor="#FFF2CC", penwidth=1.6];
+
+  p41 [label="4.1\nПроверить\nдоступность книги", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p42 [label="4.2\nОформить\nвыдачу", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p43 [label="4.3\nОформить\nвозврат", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p44 [label="4.4\nСформировать списки\nи историю", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+
+  node [shape=none, margin=0];
+  d2 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D2</td><td sides="TB" border="1">Каталог книг</td></tr></table>>];
+  d3 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D3</td><td sides="TB" border="1">Журнал выдач</td></tr></table>>];
+  d4 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D4</td><td sides="TB" border="1">Запросы читателей</td></tr></table>>];
+
+  owner -> p41 [label="выбранная книга"];
+  d2 -> p41 [label="статус книги"];
+  p41 -> owner [label="сообщение о\nнедоступности книги"];
+  p41 -> p42 [label="книга доступна"];
+
+  owner -> p42 [label="данные выдачи"];
+  p42 -> d3 [label="записи выдач"];
+  p42 -> d2 [label="статус книги"];
+  p42 -> d4 [label="закрытие запросов"];
+  p42 -> owner [label="подтверждение выдачи"];
+
+  owner -> p43 [label="данные возврата"];
+  d3 -> p43 [label="история выдач"];
+  p43 -> d3 [label="записи выдач"];
+  p43 -> d2 [label="статус книги"];
+  p43 -> owner [label="подтверждение возврата"];
+
+  owner -> p44 [label="запрос журнала\nи списков"];
+  reader -> p44 [label="запрос «мои книги»"];
+  d3 -> p44 [label="история выдач"];
+  p44 -> owner [label="журнал выдач,\nсписок «на руках»"];
+  p44 -> reader [label="список «мои книги»"];
+}

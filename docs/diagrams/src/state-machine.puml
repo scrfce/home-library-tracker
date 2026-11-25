@@ -1,0 +1,28 @@
+@startuml
+skinparam defaultFontName "DejaVu Sans"
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontSize 17
+skinparam backgroundColor white
+skinparam roundCorner 8
+skinparam StateBackgroundColor #EEF4FB
+skinparam StateBorderColor #1F3A5F
+skinparam ArrowColor #1F3A5F
+title Диаграмма состояний объекта «Выдача» (Loan)
+
+[*] --> Active : Владелец оформил выдачу\n[книга «в наличии», срок ≥ даты выдачи]
+Active : Книга у получателя
+ReminderSent : Напоминание отправлено\n(за 1 день до срока)
+Overdue : Срок возврата истёк
+Returned : Возвращена в срок
+ReturnedLate : Возвращена с опозданием
+
+Active --> ReminderSent : наступил день перед сроком /\nотправить письмо Владельцу
+Active --> Overdue : срок возврата истёк /\nотправить письмо о просрочке
+ReminderSent --> Overdue : срок возврата истёк /\nотправить письмо о просрочке
+Active --> Returned : Владелец принял возврат\n[дата возврата ≥ даты выдачи]
+ReminderSent --> Returned : Владелец принял возврат\n[дата возврата ≥ даты выдачи]
+Overdue --> ReturnedLate : Владелец принял возврат\n[дата возврата ≥ даты выдачи]
+Returned --> [*] : запись сохранена в истории
+ReturnedLate --> [*] : запись сохранена в истории\n(с числом дней просрочки)
+@enduml

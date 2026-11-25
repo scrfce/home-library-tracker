@@ -1,0 +1,68 @@
+digraph DFD0 {
+  graph [rankdir=TB, fontname="DejaVu Sans", fontsize=26, labelloc=t, nodesep=0.35, ranksep=0.75, splines=true, pad=0.3,
+         label="DFD уровня 0. Диаграмма потоков данных системы «ДомБиблиотека»\n "];
+  node  [fontname="DejaVu Sans", fontsize=22];
+  edge  [fontname="DejaVu Sans", fontsize=19, color="#1F3A5F", fontcolor="#222222"];
+
+  // внешние сущности
+  guest  [label="Гость", shape=box, style="filled", fillcolor="#FFF2CC", penwidth=1.6];
+  owner  [label="Владелец", shape=box, style="filled", fillcolor="#FFF2CC", penwidth=1.6];
+  reader [label="Читатель", shape=box, style="filled", fillcolor="#FFF2CC", penwidth=1.6];
+  mail   [label="Почтовый сервис", shape=box, style="filled", fillcolor="#FFF2CC", penwidth=1.6];
+
+  // процессы
+  p1 [label="1.0\nУправление\nдоступом", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p2 [label="2.0\nВедение\nкаталога книг", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p3 [label="3.0\nОбработка запросов\nчитателей", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p4 [label="4.0\nУчёт выдачи\nи возврата", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+  p5 [label="5.0\nКонтроль сроков и\nнапоминания", shape=ellipse, style=filled, fillcolor="#EEF4FB", penwidth=1.6];
+
+  // хранилища
+  node [shape=none, margin=0];
+  d1 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D1</td><td sides="TB" border="1">Пользователи и приглашения</td></tr></table>>];
+  d2 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D2</td><td sides="TB" border="1">Каталог книг</td></tr></table>>];
+  d3 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D3</td><td sides="TB" border="1">Журнал выдач</td></tr></table>>];
+  d4 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="8" bgcolor="#E2F0D9"><tr><td sides="TB" border="1">D4</td><td sides="TB" border="1">Запросы читателей</td></tr></table>>];
+
+  // 1.0
+  guest  -> p1 [label="данные регистрации"];
+  p1 -> guest [label="результат регистрации"];
+  owner  -> p1 [label="логин и пароль,\nзапрос приглашения"];
+  p1 -> owner [label="сессия, ссылка-\nприглашение"];
+  reader -> p1 [label="логин и пароль,\nданные регистрации"];
+  p1 -> reader [label="сессия"];
+  p1 -> d1 [label="учётные записи,\nприглашения"];
+  d1 -> p1 [label="данные для\nпроверки входа"];
+
+  // 2.0
+  owner -> p2 [label="данные книги"];
+  p2 -> owner [label="список книг,\nкарточка книги"];
+  reader -> p2 [label="условия поиска"];
+  p2 -> reader [label="список книг,\nкарточка книги"];
+  p2 -> d2 [label="сведения о книгах"];
+  d2 -> p2 [label="книги, категории,\nтеги"];
+
+  // 3.0
+  reader -> p3 [label="запрос на книгу"];
+  p3 -> d4 [label="новый запрос"];
+  d4 -> p3 [label="список запросов"];
+  p3 -> owner [label="список запросов"];
+  d2 -> p3 [label="статус книги"];
+
+  // 4.0
+  owner -> p4 [label="данные выдачи и возврата,\nзапросы журнала и списков"];
+  p4 -> owner [label="журнал выдач, список «на руках»,\nподтверждения и сообщения"];
+  reader -> p4 [label="запрос «мои книги»"];
+  p4 -> reader [label="список «мои книги»"];
+  p4 -> d3 [label="записи выдач"];
+  d3 -> p4 [label="история выдач"];
+  p4 -> d2 [label="статус книги"];
+  d2 -> p4 [label="статус книги"];
+  p4 -> d4 [label="закрытие запросов"];
+
+  // 5.0
+  d3 -> p5 [label="сроки возврата"];
+  d1 -> p5 [label="адрес почты\nВладельца"];
+  p5 -> mail [label="письмо-\nнапоминание"];
+  mail -> p5 [label="статус отправки"];
+}

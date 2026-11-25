@@ -1,0 +1,67 @@
+@startuml
+skinparam defaultFontName "DejaVu Sans"
+skinparam dpi 180
+skinparam shadowing false
+skinparam defaultFontSize 17
+skinparam backgroundColor white
+skinparam roundCorner 8
+skinparam dpi 150
+skinparam componentStyle uml2
+skinparam componentBackgroundColor #EEF4FB
+skinparam componentBorderColor #1F3A5F
+skinparam ArrowColor #1F3A5F
+skinparam nodesep 25
+skinparam ranksep 45
+title Диаграмма компонентов системы «ДомБиблиотека»
+
+component "Веб-интерфейс\n(src/templates, src/static)\nHTML, CSS, JavaScript" as UI
+interface "HTTP / HTTPS" as IHttp
+component "HTTP-маршруты\n(src/routes)" as Routes
+component "Утилиты\n(src/utils)\nвалидация, хэширование паролей" as Utils
+
+interface "IAuth" as IAuth
+interface "ICatalog" as ICat
+interface "ILoan" as ILoan
+interface "IRequest" as IReq
+
+component "AuthService" as Auth
+component "CatalogService" as Catalog
+component "LoanService" as Loan
+component "RequestService" as Req
+component "ReminderService\n(планировщик)" as Rem
+
+interface "IRepository" as IRepo
+component "Модели и репозитории\n(src/models, SQLAlchemy)" as Repo
+interface "SQL" as ISql
+database "SQLite\nlibrary.db" as DB
+interface "SMTP" as ISmtp
+cloud "Почтовый сервис\n(внешний)" as Mail
+
+UI -down-> IHttp
+Routes -up- IHttp
+Routes .left.> Utils : проверка форм
+Routes -down-> IAuth
+Routes -down-> ICat
+Routes -down-> ILoan
+Routes -down-> IReq
+Auth -up- IAuth
+Catalog -up- ICat
+Loan -up- ILoan
+Req -up- IReq
+Loan .up.> IReq : закрытие запросов
+Auth .left.> Utils : хэш пароля
+Auth -[hidden]right- Catalog
+Catalog -[hidden]right- Loan
+Loan -[hidden]right- Req
+Req -[hidden]right- Rem
+Auth -down-> IRepo
+Catalog -down-> IRepo
+Loan -down-> IRepo
+Req -down-> IRepo
+Rem -down-> IRepo
+Repo -up- IRepo
+Repo -down-> ISql
+DB -up- ISql
+Rem -right-> ISmtp : письма
+Mail -left- ISmtp
+@enduml

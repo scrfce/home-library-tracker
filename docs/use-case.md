@@ -2,9 +2,9 @@
 
 ## Диаграмма
 
-![Диаграмма вариантов использования](images/use-case-diagram.png)
+![Диаграмма вариантов использования](diagrams/use-case.png)
 
-Исходный код диаграммы для PlantUML: [use-case.puml](use-case.puml).
+Исходные файлы: [use-case.py](diagrams/src/use-case.py) (скрипт построения диаграммы).
 
 ## Акторы
 
