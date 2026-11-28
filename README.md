@@ -55,7 +55,7 @@
 - [Нефункциональные требования (NFR)](docs/requirements/non-functional.md)
 - [Варианты использования и сценарии](docs/use-case.md)
 - [Комплект диаграмм (UML, IDEF0, DFD)](docs/diagrams/README.md)
-- Отчёты: [День 2](docs/reports/day-2-report.docx), [День 3](docs/reports/day-3-report.docx)
+- Отчёты: [День 1](docs/reports/day-2-report.docx), [День 2](docs/reports/day-3-report.docx)
 
 ## Диаграммы
 
